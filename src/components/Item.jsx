@@ -1,7 +1,36 @@
+/* eslint-disable react/prop-types */
 import { useState } from 'react'
+import { supabase } from '../supabaseClient'
 
 const Item = ({ product }) => {
+  const [name, setName] = useState(product.name)
+  const [description, setDescription] = useState(product.description)
   const [isEditing, setIsEditing] = useState(false)
+
+  const updateProduct = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('products')
+        .update({ name, description })
+        .eq('id', product.id)
+        .select()
+      window.location.reload()
+    } catch (error) {
+      alert(error.message)
+    }
+  }
+
+  const deleteProduct = async () => {
+    try {
+      const { error } = await supabase
+        .from('products')
+        .delete()
+        .eq('id', product.id)
+      window.location.reload()
+    } catch (error) {
+      alert(error.message)
+    }
+  }
 
   return (
     <div className="card bg-slate-800 w-80 h-64 shadow-xl" key={product.id}>
@@ -16,7 +45,10 @@ const Item = ({ product }) => {
             >
               Edit
             </button>
-            <button className="btn btn-secondary btn-sm w-[7.5rem]">
+            <button
+              className="btn btn-secondary btn-sm w-[7.5rem]"
+              onClick={() => deleteProduct()}
+            >
               Delete
             </button>
           </div>
@@ -30,6 +62,8 @@ const Item = ({ product }) => {
             type="text"
             placeholder="Input name"
             className="input input-bordered w-full max-w-xs"
+            defaultValue={product.name}
+            onChange={(e) => setName(e.target.value)}
           />
           <label className="label">
             <span className="label-text">Description</span>
@@ -38,6 +72,8 @@ const Item = ({ product }) => {
             type="text"
             placeholder="Input description"
             className="input input-bordered w-full max-w-xs"
+            defaultValue={product.description}
+            onChange={(e) => setDescription(e.target.value)}
           />
           <div className="card-actions mt-4">
             <button
@@ -48,7 +84,7 @@ const Item = ({ product }) => {
             </button>
             <button
               className="btn btn-primary btn-sm w-[8.2rem]"
-              onClick={() => setIsEditing(false)}
+              onClick={() => updateProduct() && setIsEditing(false)}
             >
               Save
             </button>
