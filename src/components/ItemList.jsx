@@ -7,7 +7,7 @@ const ItemList = () => {
 
   return (
     <div>
-      <div className="flex gap-4">
+      <div className="flex flex-wrap gap-4">
         {products.map((product, index) => (
           <Item product={product} key={index} />
         ))}
