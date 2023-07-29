@@ -1,16 +1,19 @@
+import Home from './components/Home'
+import Navbar from './components/Navbar'
+import Login from './components/auth/login'
 import { Provider } from './context/Context'
-import AddItem from './components/AddItem'
-import ItemList from './components/ItemList'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 function App() {
   return (
     <Provider>
-      <div className="container m-auto mt-24">
-        <h1>CRUD Supabase</h1>
-        <AddItem />
-        <hr className="my-6 border-slate-600" />
-        <ItemList />
-      </div>
+      <Router>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </Router>
     </Provider>
   )
 }
