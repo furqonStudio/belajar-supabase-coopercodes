@@ -23,9 +23,11 @@ const ItemList = () => {
 
   return (
     <div>
-      {products.map((product, index) => (
-        <Item product={product} key={index} />
-      ))}
+      <div className="flex gap-4">
+        {products.map((product, index) => (
+          <Item product={product} key={index} />
+        ))}
+      </div>
     </div>
   )
 }
