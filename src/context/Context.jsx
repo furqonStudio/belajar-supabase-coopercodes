@@ -6,9 +6,24 @@ const Context = createContext()
 
 const Provider = ({ children }) => {
   const [products, setProducts] = useState([])
+  const [session, setSession] = useState(null)
 
   useEffect(() => {
     getProducts()
+  }, [])
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session)
+    })
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session)
+    })
+
+    return () => subscription.unsubscribe()
   }, [])
 
   const getProducts = async () => {
@@ -22,7 +37,11 @@ const Provider = ({ children }) => {
     }
   }
 
-  return <Context.Provider value={products}>{children}</Context.Provider>
+  return (
+    <Context.Provider value={{ products, session }}>
+      {children}
+    </Context.Provider>
+  )
 }
 
 export { Context, Provider }
