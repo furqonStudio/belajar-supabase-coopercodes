@@ -1,11 +1,11 @@
 import { useContext } from 'react'
 import { Context } from '../context/Context'
-import { Navigate } from 'react-router-dom'
+import { Navigate, Outlet } from 'react-router-dom'
 
-const PrivateRoutes = (props) => {
+const PrivateRoutes = () => {
   const { session } = useContext(Context)
 
-  return session ? props.children : <Navigate to="/login" />
+  return session ? <Outlet /> : <Navigate to="/login" />
 }
 
 export default PrivateRoutes

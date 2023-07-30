@@ -11,14 +11,9 @@ function App() {
       <Router>
         <Navbar />
         <Routes>
-          <Route
-            path="/"
-            element={
-              <PrivateRoutes>
-                <Home />
-              </PrivateRoutes>
-            }
-          />
+          <Route element={<PrivateRoutes />}>
+            <Route path="/" element={<Home />} />
+          </Route>
           <Route path="/login" element={<Login />} />
         </Routes>
       </Router>
